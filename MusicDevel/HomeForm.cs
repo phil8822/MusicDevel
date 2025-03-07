@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using NAudio.Midi;
+using System.IO;
 
 namespace MusicDevel
 {
@@ -30,7 +31,7 @@ namespace MusicDevel
         {
             // Form properties
             this.Text = "MIDI Generator";
-            this.Size = new System.Drawing.Size(400, 300);
+            //this.Size = new System.Drawing.Size(400, 300);
             this.StartPosition = FormStartPosition.CenterScreen;
 
             // Filename label and textbox
@@ -92,9 +93,20 @@ namespace MusicDevel
         {
             try
             {
+
+                // Define the output directory
+                string outputDirectory = @"c:\@temp";
+                // Combine directory with user-entered filename
+                string outputFilename = Path.Combine(outputDirectory, txtFilename.Text.Trim());
+
+                // Ensure the directory exists
+                if (!Directory.Exists(outputDirectory))
+                {
+                    Directory.CreateDirectory(outputDirectory);
+                }
+
                 // Get inputs from textboxes
-                string outputFilename = txtFilename.Text.Trim();
-                string[] notes = txtNotes.Text.Trim().Split(' ');
+                    string[] notes = txtNotes.Text.Trim().Split(' ');
 
                 // Validate inputs
                 if (string.IsNullOrEmpty(outputFilename))
