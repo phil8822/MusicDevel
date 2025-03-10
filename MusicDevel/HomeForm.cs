@@ -145,7 +145,38 @@ namespace MusicDevel
                 lblStatus.ForeColor = System.Drawing.Color.Red;
             }
         }
-    }
+
+        private void btnLoadSQLdata_Click(object sender, EventArgs e)
+        {
+
+            LoadSQLdata.Go();
+
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            /* F1 key for help */
+            if (keyData == Keys.F1)
+            {
+                MessageBox.Show("F1 button was pressed", "Keyboard feedback...", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+            /* close form on escape key */
+            try
+            {
+                if (msg.WParam.ToInt32() == (int)Keys.Escape) this.Close();
+                /*    else return base.ProcessCmdKey(ref msg, keyData); is this line needed???? */
+            }
+            catch (Exception Ex)
+            {
+                MessageBox.Show("Key Overrided Events Error:" + Ex.Message);
+            }
+
+            /* Call the base class for normal key processing */
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+    } // end of class
 
 
     public class PatchParser
