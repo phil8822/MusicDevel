@@ -20,25 +20,16 @@ namespace MusicDevel
 
             string sqlQry =
 $@"
-SELECT 
-  [Idx]
-  ,[SongID]
-  ,[Version]
-  ,[Measure]
+  SELECT 
+  [Measure]
   ,[Note]
-  ,[Track]
   ,[IntVal]
-  ,[StrVal]
-  ,[Inversion]
-  ,[Octaveshift]
-  ,[Pattern]
-  ,[Percussion]
   FROM [MyDemo].[dbo].[AutoMuse2]
   WHERE [SongID] = 5 and [Version] = 1 and [Track] = 1
-  ORDER BY [SongID], [Measure], [Note], [Track]
+  ORDER BY [SongID], [Track], [Measure], [Note]
 ";
 
-            DataTable Music = new DataTable();
+            DataTable MusicTable = new DataTable();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
@@ -46,7 +37,7 @@ SELECT
                 {
                     using (SqlDataAdapter adapter = new SqlDataAdapter(command))
                     {
-                        adapter.Fill(Music);
+                        adapter.Fill(MusicTable);
                     }
                 }
             }
