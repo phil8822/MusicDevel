@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using NAudio.Midi;
 using System.IO;
 
+
 namespace MusicDevel
 {
     // Main WinForms class
@@ -150,6 +151,7 @@ namespace MusicDevel
         {
 
             LoadSQLdata.Go();
+            this.dgvMusicTable.DataSource = LoadSQLdata.musicTable;
 
         }
 

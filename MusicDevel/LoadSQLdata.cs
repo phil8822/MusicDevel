@@ -13,6 +13,7 @@ namespace MusicDevel
     {
 
         static string connectionString = Properties.Settings.Default.CnxStringHome;
+        public static DataTable musicTable = new DataTable();
 
         public static void Go() 
         {
@@ -29,7 +30,6 @@ $@"
   ORDER BY [SongID], [Track], [Measure], [Note]
 ";
 
-            DataTable MusicTable = new DataTable();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
@@ -37,14 +37,10 @@ $@"
                 {
                     using (SqlDataAdapter adapter = new SqlDataAdapter(command))
                     {
-                        adapter.Fill(MusicTable);
+                        adapter.Fill(musicTable);
                     }
                 }
             }
-
-
-
-            MessageBox.Show("Load SQL data");
         }
     }
 }
