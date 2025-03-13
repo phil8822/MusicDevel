@@ -13,7 +13,6 @@ using System.IO;
 
 namespace MusicDevel
 {
-    // Main WinForms class
     public partial class HomeForm : Form
     {
         public HomeForm()
@@ -32,7 +31,7 @@ namespace MusicDevel
         {
             // Form properties
             this.Text = "MIDI Generator";
-            //this.Size = new System.Drawing.Size(400, 300);
+            // // // this.Size = new System.Drawing.Size(400, 300);
             this.StartPosition = FormStartPosition.CenterScreen;
 
             // Filename label and textbox
@@ -94,7 +93,6 @@ namespace MusicDevel
         {
             try
             {
-
                 // Define the output directory
                 string outputDirectory = @"c:\@temp";
                 // Combine directory with user-entered filename
@@ -153,7 +151,21 @@ namespace MusicDevel
             LoadSQLdata.Go();
             this.dgvMusicTable.DataSource = LoadSQLdata.musicTable;
 
+            string outputDirectory = @"c:\@temp";
+            string outputFilename = Path.Combine(outputDirectory, txtFilename.Text.Trim());
+            var exporter = new MidiExporter();
+
+            // Convert IEnumerable<int> to IEnumerable<Pitch>
+            var pitchNotes = MyNotes().Select(note => new Pitch(note));
+
+            exporter.SaveToFile(outputFilename, pitchNotes);
         }
+
+        public static IEnumerable<int> MyNotes()
+        {
+            return new List<int> { 60, 62, 64, 65, 67, 69, 71, 72 };
+        }
+
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
@@ -350,5 +362,6 @@ namespace MusicDevel
         {
             return 60 * 1000 * 1000 / bpm;
         }
-    }
-}
+
+    }  // end of class
+} // end of namespace

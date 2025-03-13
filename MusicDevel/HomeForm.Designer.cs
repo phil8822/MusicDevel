@@ -45,9 +45,14 @@
             // 
             // dgvMusicTable
             // 
+            this.dgvMusicTable.AllowUserToAddRows = false;
+            this.dgvMusicTable.AllowUserToDeleteRows = false;
+            this.dgvMusicTable.AllowUserToOrderColumns = true;
             this.dgvMusicTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvMusicTable.Location = new System.Drawing.Point(118, 775);
             this.dgvMusicTable.Name = "dgvMusicTable";
+            this.dgvMusicTable.ReadOnly = true;
+            this.dgvMusicTable.RowHeadersVisible = false;
             this.dgvMusicTable.RowHeadersWidth = 82;
             this.dgvMusicTable.RowTemplate.Height = 33;
             this.dgvMusicTable.Size = new System.Drawing.Size(856, 424);
