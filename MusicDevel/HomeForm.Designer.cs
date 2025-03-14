@@ -35,7 +35,7 @@
             // 
             // btnLoadSQLdata
             // 
-            this.btnLoadSQLdata.Location = new System.Drawing.Point(118, 592);
+            this.btnLoadSQLdata.Location = new System.Drawing.Point(118, 156);
             this.btnLoadSQLdata.Name = "btnLoadSQLdata";
             this.btnLoadSQLdata.Size = new System.Drawing.Size(413, 127);
             this.btnLoadSQLdata.TabIndex = 0;
@@ -49,13 +49,13 @@
             this.dgvMusicTable.AllowUserToDeleteRows = false;
             this.dgvMusicTable.AllowUserToOrderColumns = true;
             this.dgvMusicTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvMusicTable.Location = new System.Drawing.Point(118, 775);
+            this.dgvMusicTable.Location = new System.Drawing.Point(118, 361);
             this.dgvMusicTable.Name = "dgvMusicTable";
             this.dgvMusicTable.ReadOnly = true;
             this.dgvMusicTable.RowHeadersVisible = false;
             this.dgvMusicTable.RowHeadersWidth = 82;
             this.dgvMusicTable.RowTemplate.Height = 33;
-            this.dgvMusicTable.Size = new System.Drawing.Size(856, 424);
+            this.dgvMusicTable.Size = new System.Drawing.Size(1122, 560);
             this.dgvMusicTable.TabIndex = 1;
             // 
             // HomeForm

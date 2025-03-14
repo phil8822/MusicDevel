@@ -16,7 +16,7 @@ namespace MusicDevel
     public partial class HomeForm : Form
     {
 
-        const string outputFilename = @"c:\@temp\cs.mid";
+        const string outputFilename = @"c:\@temp\cs2.mid";
 
         public HomeForm()
         {
@@ -35,13 +35,31 @@ namespace MusicDevel
         {
 
             // SQL tasks
-            LoadSQLdata.Go();
-            this.dgvMusicTable.DataSource = LoadSQLdata.musicTable;
+            GetSQLdata.Go();
+            this.dgvMusicTable.DataSource = GetSQLdata.musicTable;
 
-            // Convert IEnumerable<int> to IEnumerable<Pitch>
+            // Set DataGridView columns to width 80
+            foreach (DataGridViewColumn column in dgvMusicTable.Columns)
+            {
+                column.Width = 80;
+            }
+
+            // Set DataGridView column headers to bold font and centered
+            DataGridViewCellStyle headerStyle = new DataGridViewCellStyle();
+            headerStyle.Font = new Font(dgvMusicTable.Font, FontStyle.Bold);
+            headerStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgvMusicTable.ColumnHeadersDefaultCellStyle = headerStyle;
+
+            // Set default cell style to centered
+            DataGridViewCellStyle cellStyle = new DataGridViewCellStyle();
+            cellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgvMusicTable.DefaultCellStyle = cellStyle;
+
+
+            // Notes Data: Convert IEnumerable<int> to IEnumerable<Pitch>
             var pitchNotes = MyNotes().Select(note => new Pitch(note));
 
-            // Midi file creation
+            // Midi disc file creation
             var exporter = new MidiExporter();
             exporter.CreateMidiFile(outputFilename, pitchNotes);
         }
@@ -105,21 +123,24 @@ namespace MusicDevel
             int patchNumber = 1; // temporary fixed value Acoutic Grand Piano
             int NoteVelocity = 100;
 
-            var collection = new MidiEventCollection(MidiFileType, TicksPerQuarterNote);
-            collection.AddEvent(new TextEvent("Note Stream", MetaEventType.TextEvent, absoluteTime), TrackNumber);
+            // at absoluteTime = 0
+            var midiEvts = new MidiEventCollection(MidiFileType, TicksPerQuarterNote);
+            midiEvts.AddEvent(new TextEvent("Note Stream", MetaEventType.TextEvent, absoluteTime), TrackNumber);
             ++absoluteTime;
-            collection.AddEvent(new TempoEvent(CalculateMicrosecondsPerQuaterNote(BeatsPerMinute), absoluteTime), TrackNumber);
-            collection.AddEvent(new PatchChangeEvent(0, ChannelNumber, patchNumber), TrackNumber);
+
+            // at absoluteTime = 1
+            midiEvts.AddEvent(new TempoEvent(CalculateMicrosecondsPerQuaterNote(BeatsPerMinute), absoluteTime), TrackNumber);
+            midiEvts.AddEvent(new PatchChangeEvent(0, ChannelNumber, patchNumber), TrackNumber);
 
             foreach (var note in allNotes)
             {
-                collection.AddEvent(new NoteOnEvent(absoluteTime, ChannelNumber, note.MidiValue, NoteVelocity, NoteDuration), TrackNumber);
-                collection.AddEvent(new NoteEvent(absoluteTime + NoteDuration, ChannelNumber, MidiCommandCode.NoteOff, note.MidiValue, 0), TrackNumber);
+                midiEvts.AddEvent(new NoteOnEvent(absoluteTime, ChannelNumber, note.MidiValue, NoteVelocity, NoteDuration), TrackNumber);
+                midiEvts.AddEvent(new NoteEvent(absoluteTime + NoteDuration, ChannelNumber, MidiCommandCode.NoteOff, note.MidiValue, 0), TrackNumber);
                 absoluteTime += SpaceBetweenNotes;
             }
 
-            collection.PrepareForExport();
-            MidiFile.Export(fileName, collection);
+            midiEvts.PrepareForExport();
+            MidiFile.Export(fileName, midiEvts);
         }
 
         private static int CalculateMicrosecondsPerQuaterNote(int bpm)
