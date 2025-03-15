@@ -63,8 +63,7 @@ namespace MusicDevel
 
             // Midi disc file creation
             var exporter = new MidiExporter();
-            exporter.CreateMidiFile(outputFilename, pitchNotes);
-            exporter.CreateMidiFile2(@"c:\@temp\cs3.mid", pitchNotes, GetSQLdata.musicTable);
+            exporter.CreateMidiFile(@"c:\@temp\cs3.mid", pitchNotes, GetSQLdata.musicTable);
         }
 
         public static IEnumerable<int> MyNotes()
@@ -112,44 +111,11 @@ namespace MusicDevel
 
     public class MidiExporter
     {
-        public void CreateMidiFile(string fileName, IEnumerable<Pitch> allNotes)
+
+        public void CreateMidiFile(string fileName, IEnumerable<Pitch> allNotes, DataTable musicTable)
         {
             int MidiFileType = 0;
-            int BeatsPerMinute = 120;  //int BeatsPerMinute = 60;
-            int TicksPerQuarterNote = 120;
-            int NoteDuration = 4 * TicksPerQuarterNote / 4;  
-            long SpaceBetweenNotes = TicksPerQuarterNote;
-            long absoluteTime = 0;
-            int TrackNumber = 0;
-            int ChannelNumber = 1;
-            int patchNumber = 1; // temporary fixed value Acoutic Grand Piano
-            int NoteVelocity = 100;
-
-            // at absoluteTime = 0
-            var midiEvts = new MidiEventCollection(MidiFileType, TicksPerQuarterNote);
-            midiEvts.AddEvent(new TextEvent("Note Stream", MetaEventType.TextEvent, absoluteTime), TrackNumber);
-            //++absoluteTime;
-
-            // // //  at absoluteTime = 1
-            midiEvts.AddEvent(new TempoEvent(MicrosecondsPerQuaterNote(BeatsPerMinute), absoluteTime), TrackNumber);
-            midiEvts.AddEvent(new PatchChangeEvent(0, ChannelNumber, patchNumber), TrackNumber);
-
-            foreach (var note in allNotes)
-            {
-                midiEvts.AddEvent(new NoteOnEvent(absoluteTime, ChannelNumber, note.MidiValue, NoteVelocity, NoteDuration), TrackNumber);
-                midiEvts.AddEvent(new NoteEvent(absoluteTime + NoteDuration, ChannelNumber, MidiCommandCode.NoteOff, note.MidiValue, 0), TrackNumber);
-                // // Debug.Print($"{absoluteTime}  {ChannelNumber}  {note.MidiValue}  {NoteDuration}");
-                absoluteTime += SpaceBetweenNotes;
-            }
-
-            midiEvts.PrepareForExport();
-            MidiFile.Export(fileName, midiEvts);
-        }
-
-        public void CreateMidiFile2(string fileName, IEnumerable<Pitch> allNotes, DataTable musicTable)
-        {
-            int MidiFileType = 0;
-            int BeatsPerMinute = 120;  //int BeatsPerMinute = 60;
+            int BeatsPerMinute = 120;  
             int TicksPerQuarterNote = 120;
             int NoteDuration = 4 * TicksPerQuarterNote / 4;
             long SpaceBetweenNotes = TicksPerQuarterNote;
@@ -159,22 +125,11 @@ namespace MusicDevel
             int patchNumber = 1; // temporary fixed value Acoutic Grand Piano
             int NoteVelocity = 100;
 
-            // at absoluteTime = 0
             var midiEvts = new MidiEventCollection(MidiFileType, TicksPerQuarterNote);
             midiEvts.AddEvent(new TextEvent("Note Stream", MetaEventType.TextEvent, absoluteTime), TrackNumber);
-            //++absoluteTime;
 
-            // // //  at absoluteTime = 1
             midiEvts.AddEvent(new TempoEvent(MicrosecondsPerQuaterNote(BeatsPerMinute), absoluteTime), TrackNumber);
             midiEvts.AddEvent(new PatchChangeEvent(0, ChannelNumber, patchNumber), TrackNumber);
-
-            //foreach (var note in allNotes)
-            //{
-            //    midiEvts.AddEvent(new NoteOnEvent(absoluteTime, ChannelNumber, note.MidiValue, NoteVelocity, NoteDuration), TrackNumber);
-            //    midiEvts.AddEvent(new NoteEvent(absoluteTime + NoteDuration, ChannelNumber, MidiCommandCode.NoteOff, note.MidiValue, 0), TrackNumber);
-            //    Debug.Print($"{absoluteTime}  {ChannelNumber}  {note.MidiValue}  {NoteDuration}");
-            //    absoluteTime += SpaceBetweenNotes;
-            //}
 
             for (int i = 0; i < musicTable.Rows.Count; i++) 
             {
@@ -185,9 +140,6 @@ namespace MusicDevel
 
                 midiEvts.AddEvent(new NoteOnEvent(absoluteTime, ChannelNumber, midiValue, NoteVelocity, durationTicks), TrackNumber);
                 midiEvts.AddEvent(new NoteEvent(absoluteTime + durationTicks, ChannelNumber, MidiCommandCode.NoteOff, midiValue, 0), TrackNumber);
-
-                Debug.Print($"{absoluteTime}   {midiValue}   {durationTicks}");
-
             }
 
             midiEvts.PrepareForExport();
