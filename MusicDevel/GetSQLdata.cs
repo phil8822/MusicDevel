@@ -11,13 +11,16 @@ namespace MusicDevel
 {
     public class GetSQLdata
     {
-
+        const int TicksPerQuarterNote = 120;  // ** REDUNDANT TO Class HomeForm **
+        const int TicksPerHalfBeat = TicksPerQuarterNote / 2 ; 
         static string connectionString = Properties.Settings.Default.CnxStringHome;
         public static DataTable musicTable = new DataTable();
 
         public static void Go() 
         {
-
+            // Clear existing columns and rows in musicTable
+            musicTable.Clear();
+            musicTable.Columns.Clear();
 
             // Local database query
             string sqlQry =
@@ -46,37 +49,49 @@ $@"
 
             // Add Duration column and compute values
             musicTable.Columns.Add("Duration", typeof(int));
-            musicTable.Columns.Add("StartSubeat", typeof(int));
-            musicTable.Columns.Add("EndSubeat", typeof(int));
+            musicTable.Columns.Add("StartHalfBeat", typeof(int));
+            musicTable.Columns.Add("EndHalfBeat", typeof(int));
+            musicTable.Columns.Add("AbsoluteTime", typeof(int));
+            musicTable.Columns.Add("DurationTicks", typeof(int));
 
-            // Calculate StartSubeat values
+            // Calculate StartHalfBeat values
             for (int i = 0; i < musicTable.Rows.Count; i++)
             {
                 DataRow row = musicTable.Rows[i];
                 int measure = Convert.ToInt32(row["Measure"]);
                 int note = Convert.ToInt32(row["Note"]);
-                int startSubeat = 8 * (measure - 1) + note;
-                row["StartSubeat"] = startSubeat;
+                int startHalfBeat = 8 * (measure - 1) + note;
+                row["StartHalfBeat"] = startHalfBeat;
             }
 
-            // Calculate EndSubeat and Duration values
+            int absoluteTime = 0;
+            int durationTicks = 0;
+
+            // Calculate EndHalfBeat and Duration values
             for (int i = 0; i < musicTable.Rows.Count; i++)
             {
                 DataRow row = musicTable.Rows[i];
-                int startSubeat = Convert.ToInt32(row["StartSubeat"]);
-                int endSubeat = (i < musicTable.Rows.Count - 1) ? Convert.ToInt32(musicTable.Rows[i + 1]["StartSubeat"]) : startSubeat + 1;
-                row["EndSubeat"] = endSubeat;
-                row["Duration"] = endSubeat - startSubeat;
+                int startHalfBeat = Convert.ToInt32(row["StartHalfBeat"]);
+                int endHalfBeat = (i < musicTable.Rows.Count - 1) ? Convert.ToInt32(musicTable.Rows[i + 1]["StartHalfBeat"]) : startHalfBeat + 1;
+                row["EndHalfBeat"] = endHalfBeat;
+                row["Duration"] = endHalfBeat - startHalfBeat;
+                durationTicks =  TicksPerHalfBeat * (endHalfBeat - startHalfBeat);
+                row["DurationTicks"] = durationTicks;
+                row["AbsoluteTime"] = absoluteTime;
+                
+                absoluteTime += durationTicks;
 
+                // Last row
                 if (i == musicTable.Rows.Count -1 ) 
                 {
-                    int lastSubeat = 8* Convert.ToInt32(row["Measure"]);
-                    row["EndSubeat"] = lastSubeat;
-                    row["Duration"] = endSubeat - startSubeat;
+                    int lastHalfBeat = 8 * Convert.ToInt32(row["Measure"]);
+                    row["EndHalfBeat"] = lastHalfBeat;
+                    row["Duration"] = lastHalfBeat - startHalfBeat + 1;
+
+                    durationTicks = TicksPerHalfBeat * (lastHalfBeat - startHalfBeat + 1);
+                    row["DurationTicks"] = durationTicks;
                 }
             }
-
-
         }
     } // end of class GetSQLdata
 } // end of namespace MusicDevel

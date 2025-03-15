@@ -55,7 +55,7 @@
             this.dgvMusicTable.RowHeadersVisible = false;
             this.dgvMusicTable.RowHeadersWidth = 82;
             this.dgvMusicTable.RowTemplate.Height = 33;
-            this.dgvMusicTable.Size = new System.Drawing.Size(1122, 560);
+            this.dgvMusicTable.Size = new System.Drawing.Size(1594, 560);
             this.dgvMusicTable.TabIndex = 1;
             // 
             // HomeForm
