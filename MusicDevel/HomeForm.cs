@@ -34,7 +34,6 @@ namespace MusicDevel
 
         private void btnLoadSQLdata_Click(object sender, EventArgs e)
         {
-
             // SQL tasks
             GetSQLdata.Go();
             this.dgvMusicTable.DataSource = GetSQLdata.musicTable;
@@ -57,13 +56,9 @@ namespace MusicDevel
             cellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgvMusicTable.DefaultCellStyle = cellStyle;
 
-
-            // Notes Data: Convert IEnumerable<int> to IEnumerable<Pitch>
-            var pitchNotes = MyNotes().Select(note => new Pitch(note));
-
             // Midi disc file creation
             var exporter = new MidiExporter();
-            exporter.CreateMidiFile(@"c:\@temp\cs3.mid", pitchNotes, GetSQLdata.musicTable);
+            exporter.CreateMidiFile(@"c:\@temp\cs3.mid", GetSQLdata.musicTable);
         }
 
         public static IEnumerable<int> MyNotes()
@@ -94,28 +89,16 @@ namespace MusicDevel
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
-    } // end of class
+    } // end of class HomeForm
 
-    public class Pitch
-    {
-        const int MinimumMidiValue = 0;
-        const int MaximumMidiValue = 255;
-
-        public Pitch(int value)
-        {
-            this.MidiValue = Math.Min(MaximumMidiValue, Math.Max(value, MinimumMidiValue));
-        }
-
-        public int MidiValue { get; private set; }
-    }
 
     public class MidiExporter
     {
 
-        public void CreateMidiFile(string fileName, IEnumerable<Pitch> allNotes, DataTable musicTable)
+        public void CreateMidiFile(string fileName, DataTable musicTable)
         {
             int MidiFileType = 0;
-            int BeatsPerMinute = 120;  
+            int BeatsPerMinute = 120;
             int TicksPerQuarterNote = 120;
             int NoteDuration = 4 * TicksPerQuarterNote / 4;
             long SpaceBetweenNotes = TicksPerQuarterNote;
@@ -131,7 +114,7 @@ namespace MusicDevel
             midiEvts.AddEvent(new TempoEvent(MicrosecondsPerQuaterNote(BeatsPerMinute), absoluteTime), TrackNumber);
             midiEvts.AddEvent(new PatchChangeEvent(0, ChannelNumber, patchNumber), TrackNumber);
 
-            for (int i = 0; i < musicTable.Rows.Count; i++) 
+            for (int i = 0; i < musicTable.Rows.Count; i++)
             {
                 DataRow row = musicTable.Rows[i];
                 absoluteTime = Convert.ToInt32(row["AbsoluteTime"]);
