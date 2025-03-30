@@ -28,20 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnLoadSQLdata = new System.Windows.Forms.Button();
+            this.btnGo = new System.Windows.Forms.Button();
             this.dgvMusicTable = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMusicTable)).BeginInit();
             this.SuspendLayout();
             // 
-            // btnLoadSQLdata
+            // btnGo
             // 
-            this.btnLoadSQLdata.Location = new System.Drawing.Point(118, 156);
-            this.btnLoadSQLdata.Name = "btnLoadSQLdata";
-            this.btnLoadSQLdata.Size = new System.Drawing.Size(413, 127);
-            this.btnLoadSQLdata.TabIndex = 0;
-            this.btnLoadSQLdata.Text = "Load Data from SQL";
-            this.btnLoadSQLdata.UseVisualStyleBackColor = true;
-            this.btnLoadSQLdata.Click += new System.EventHandler(this.btnLoadSQLdata_Click);
+            this.btnGo.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnGo.Location = new System.Drawing.Point(118, 156);
+            this.btnGo.Name = "btnGo";
+            this.btnGo.Size = new System.Drawing.Size(413, 127);
+            this.btnGo.TabIndex = 0;
+            this.btnGo.Text = "Go";
+            this.btnGo.UseVisualStyleBackColor = true;
+            this.btnGo.Click += new System.EventHandler(this.btnLoadGO_Click);
             // 
             // dgvMusicTable
             // 
@@ -64,7 +65,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(2304, 1524);
             this.Controls.Add(this.dgvMusicTable);
-            this.Controls.Add(this.btnLoadSQLdata);
+            this.Controls.Add(this.btnGo);
             this.Name = "HomeForm";
             this.Text = "Music Development";
             ((System.ComponentModel.ISupportInitialize)(this.dgvMusicTable)).EndInit();
@@ -74,7 +75,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Button btnLoadSQLdata;
+        private System.Windows.Forms.Button btnGo;
         private System.Windows.Forms.DataGridView dgvMusicTable;
     }
 }

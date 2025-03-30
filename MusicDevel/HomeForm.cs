@@ -32,12 +32,23 @@ namespace MusicDevel
             this.StartPosition = FormStartPosition.CenterScreen;
         }
 
-        private void btnLoadSQLdata_Click(object sender, EventArgs e)
+        private void btnLoadGO_Click(object sender, EventArgs e)
         {
             // SQL tasks
             GetSQLdata.Melody();
-            GetSQLdata.Harmony();
-            this.dgvMusicTable.DataSource = GetSQLdata.melodyTable;
+            GetSQLdata.Harmony(0, 0);  // temp values, get data from Song properties
+
+            // Midi disc file creation
+            var exporter = new MidiExporter();
+            exporter.CreateMidiFile(@"c:\@temp\cs3.mid", GetSQLdata.melodyEvents);
+
+
+            SetupDGV();
+        }
+
+        private void SetupDGV()
+        {
+            this.dgvMusicTable.DataSource = GetSQLdata.melodyEvents;
 
             // Set DataGridView columns to width 80
             foreach (DataGridViewColumn column in dgvMusicTable.Columns)
@@ -56,12 +67,7 @@ namespace MusicDevel
             DataGridViewCellStyle cellStyle = new DataGridViewCellStyle();
             cellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgvMusicTable.DefaultCellStyle = cellStyle;
-
-            // Midi disc file creation
-            var exporter = new MidiExporter();
-            exporter.CreateMidiFile(@"c:\@temp\cs3.mid", GetSQLdata.melodyTable);
         }
-
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
