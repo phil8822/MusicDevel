@@ -24,10 +24,22 @@ namespace MusicDevel
             int NoteVelocity = 100;
 
             var midiEvts = new MidiEventCollection(MidiFileType, TicksPerQuarterNote);
-            midiEvts.AddEvent(new TextEvent("Note Stream", MetaEventType.TextEvent, absoluteTime), TrackNumber);
 
+            // Add title meta event (fails in MuseScore, appears in MusicMasterWorks)
+            var txEvent1 = new TextEvent("Sequence track name", MetaEventType.SequenceTrackName, absoluteTime);
+            midiEvts.AddEvent(txEvent1, 0);
+
+            var txEvent2 = new TextEvent("Copyright text string", MetaEventType.Copyright, absoluteTime);
+            midiEvts.AddEvent(txEvent2, 0);
+
+            var txEvent3 = new TextEvent("Program Name", MetaEventType.ProgramName, absoluteTime);
+            midiEvts.AddEvent(txEvent3, 0);
+
+            midiEvts.AddEvent(new TextEvent("Text Event - Note Stream", MetaEventType.TextEvent, absoluteTime), TrackNumber);
+            
             midiEvts.AddEvent(new TempoEvent(MicrosecondsPerQuaterNote(BeatsPerMinute), absoluteTime), TrackNumber);
             midiEvts.AddEvent(new PatchChangeEvent(0, ChannelNumber, patchNumber), TrackNumber);
+
 
             for (int i = 0; i < musicTable.Rows.Count; i++)
             {

@@ -40,15 +40,14 @@ namespace MusicDevel
 
             // Midi disc file creation
             var exporter = new MidiExporter();
-            exporter.CreateMidiFile(@"c:\@temp\cs3.mid", GetSQLdata.melodyEvents);
-
+            exporter.CreateMidiFile(@"c:\@temp\cs3.mid", GetSQLdata.melodyMidiEvents);
 
             SetupDGV();
         }
 
         private void SetupDGV()
         {
-            this.dgvMusicTable.DataSource = GetSQLdata.melodyEvents;
+            this.dgvMusicTable.DataSource = GetSQLdata.melodyMidiEvents;
 
             // Set DataGridView columns to width 80
             foreach (DataGridViewColumn column in dgvMusicTable.Columns)
@@ -81,7 +80,6 @@ namespace MusicDevel
             try
             {
                 if (msg.WParam.ToInt32() == (int)Keys.Escape) this.Close();
-                // //  else return base.ProcessCmdKey(ref msg, keyData); is this line needed??
             }
             catch (Exception Ex)
             {
