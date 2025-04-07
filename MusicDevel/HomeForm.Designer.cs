@@ -42,7 +42,7 @@
             this.btnGo.TabIndex = 0;
             this.btnGo.Text = "Go";
             this.btnGo.UseVisualStyleBackColor = true;
-            this.btnGo.Click += new System.EventHandler(this.btnLoadGO_Click);
+            this.btnGo.Click += new System.EventHandler(this.btnGO_Click);
             // 
             // dgvMusicTable
             // 

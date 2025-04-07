@@ -76,6 +76,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DiagHelpers.cs" />
     <Compile Include="MidiExporter.cs" />
     <Compile Include="HomeForm.cs">
       <SubType>Form</SubType>
@@ -83,7 +84,7 @@
     <Compile Include="HomeForm.Designer.cs">
       <DependentUpon>HomeForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="GetSQLdata.cs" />
+    <Compile Include="SQLdata.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="HomeForm.resx">

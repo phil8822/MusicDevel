@@ -8,13 +8,14 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using NAudio.SoundFont;
 using NAudio.Midi;
+using System.Diagnostics;
 
 namespace MusicDevel
 {
-    public class GetSQLdata
+    public class SQLdata
     {
+        #region Declarations
         const int startBar = 1;               // leftover from original code in AutoMuse 
-        const int ticksPerQtrNote = 96;       // adopted from VFP 
         const int colCount = 8;               // 4 for four quarter notes; value is 8 when eigth-notes allowed 
         const int onCommand = 143;		      // dec144/hex90 if note-on channel 1, 91=chan 2, etc  
         const int harmonyChannel = 4;         // adopted from VFP 
@@ -25,8 +26,9 @@ namespace MusicDevel
         public static DataTable tblInv = new DataTable();
         public static DataTable melodyMidiEvents = new DataTable();
         public static DataTable harmonyData = new DataTable();
-        public static DataTable hamonyMidiNotes = new DataTable();
+        public static DataTable harmonyMidiNotes = new DataTable();
         public static DataTable harmonyMidiEvents = new DataTable();
+        #endregion
 
         public static void Melody() 
         {
@@ -192,10 +194,10 @@ ORDER BY [SongID], [Track], [Measure], [Note];
                 int first = (int)r["Note"];
                 int last = first + 3;
 
-                for (double subBeat = first; subBeat <= last; subBeat++)
+                for (double halfBeat = first; halfBeat <= last; halfBeat++)
                 {
                     bool makeChord = false;
-                    int velocityB = (int)r["n0" + subBeat.ToString("G")];
+                    int velocityB = (int)r["n0" + halfBeat.ToString("G")];
                     if (velocityB > 0) makeChord = true;
 
                     if (makeChord)
@@ -203,7 +205,7 @@ ORDER BY [SongID], [Track], [Measure], [Note];
                         /* iterate through notes in chord */
                         for (int k = 1; k <= Convert.ToInt32(r["NoteCount"]); k++)
                         {
-                            int myTone;
+                            int midiVal;
                             int chordOctaveShift;
                             int chordInversion;
 
@@ -225,7 +227,7 @@ ORDER BY [SongID], [Track], [Measure], [Note];
                                 chordInversion = Convert.ToInt16(r["Inversion"]);
                             }
 
-                            myTone =
+                            midiVal =
                                 (int)r["IntVal"]
                                 + (int)r["Tone" + k.ToString("G")]
                                 + keyShift + 12 * octaveShift
@@ -233,30 +235,33 @@ ORDER BY [SongID], [Track], [Measure], [Note];
                                 + 12 * Inv.inversion(Convert.ToInt32(r["NoteCount"]), k, chordInversion);
 
                             int bar = (int)r["measure"] - startBar + 1;
-                            double myTick = (4 * ticksPerQtrNote) * ((bar - 1) + ((subBeat - 1) / colCount));
-                            int midiCommand = onCommand + harmonyChannel;
+                            double myTick = (4 * ticksPerQuarterNote) * ((bar - 1) + ((halfBeat - 1) / colCount));
 
-                            hamonyMidiNotes.Rows.Add(
-                                harmonyChannel, bar, subBeat, (int)myTick, 0, midiCommand, myTone, velocityB, 0);
+                            harmonyMidiNotes.Rows.Add(
+                                harmonyChannel, bar, halfBeat, (int)myTick, midiVal, velocityB);
                         }
                     }
                 }
             }
 
-            foreach (DataRow r in hamonyMidiNotes.Rows) 
+            foreach (DataRow r in harmonyMidiNotes.Rows) 
             {
                 DataRow newRow = harmonyMidiEvents.NewRow();
                 newRow["Measure"] = r["Bar"];
-                newRow["Note"] = r["SubBeat"];
-                newRow["IntVal"] = r["I1"];
+                newRow["Note"] = r["halfBeat"];
+                newRow["IntVal"] = r["midiVal"];
                 newRow["Duration"] = 1;
-                newRow["StartHalfBeat"] = 8 * (Convert.ToInt32(r["Bar"]) - 1) + Convert.ToInt32(r["SubBeat"]);
-                newRow["EndHalfBeat"] = 8 * (Convert.ToInt32(r["Bar"]) - 1) + Convert.ToInt32(r["SubBeat"]) + 1;
+                newRow["StartHalfBeat"] = 8 * (Convert.ToInt32(r["Bar"]) - 1) + Convert.ToInt32(r["halfBeat"]);
+                newRow["EndHalfBeat"] = 8 * (Convert.ToInt32(r["Bar"]) - 1) + Convert.ToInt32(r["halfBeat"]) + 1;
                 newRow["AbsoluteTime"] = Convert.ToInt32(r["Tick"]);
-                newRow["DurationTicks"] = 96;
+                newRow["DurationTicks"] = ticksPerQuarterNote;
                 harmonyMidiEvents.Rows.Add(newRow);
             }
-        
+
+            DiagHelper.DumpTable(harmonyData, "harmonyData");
+            DiagHelper.DumpTable(harmonyMidiNotes, "harmonyMidiNotes");
+            DiagHelper.DumpTable(harmonyMidiEvents, "harmonyMidiEvents");
+            DiagHelper.DumpTable(melodyMidiEvents, "melodyMidiEvents");
         }
 
 
@@ -272,14 +277,14 @@ ORDER BY [SongID], [Track], [Measure], [Note];
             tblInv.Rows.Add(new object[] { "+1", +1 });
             tblInv.Rows.Add(new object[] { "+2", +2 });
 
-            // Harmon Midi Notes
-            hamonyMidiNotes = new DataTable();
-            List<string> colNames = new List<string>() { "Channel", "Bar", "SubBeat", "Tick", "Di", "I1", "I2", "I3", "I4" };
+            // Harmony Notes
+            harmonyMidiNotes = new DataTable();
+            List<string> colNames = new List<string>() { "Channel", "Bar", "halfBeat", "Tick", "midiVal", "Velocity" };
             foreach (string name in colNames)
             {
-                hamonyMidiNotes.Columns.Add(name, typeof(int));
+                harmonyMidiNotes.Columns.Add(name, typeof(int));
             }
-            hamonyMidiNotes.DefaultView.Sort = ("Tick ASC, I1 ASC");
+            harmonyMidiNotes.DefaultView.Sort = ("Tick ASC");
         }
 
 

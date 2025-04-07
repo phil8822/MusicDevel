@@ -32,22 +32,22 @@ namespace MusicDevel
             this.StartPosition = FormStartPosition.CenterScreen;
         }
 
-        private void btnLoadGO_Click(object sender, EventArgs e)
+        private void btnGO_Click(object sender, EventArgs e)
         {
             // SQL tasks
-            GetSQLdata.Melody();
-            GetSQLdata.Harmony(0, 0);  // temp values, get data from Song properties
+            SQLdata.Melody();
+            SQLdata.Harmony(0, 0);  // temp values, get data from Song properties
 
             // Midi disc file creation
             var exporter = new MidiExporter();
-            exporter.CreateMidiFile(@"c:\@temp\cs3.mid", GetSQLdata.melodyMidiEvents);
+            exporter.CreateMidiFile(outputFilename, SQLdata.melodyMidiEvents);
 
             SetupDGV();
         }
 
         private void SetupDGV()
         {
-            this.dgvMusicTable.DataSource = GetSQLdata.melodyMidiEvents;
+            this.dgvMusicTable.DataSource = SQLdata.melodyMidiEvents;
 
             // Set DataGridView columns to width 80
             foreach (DataGridViewColumn column in dgvMusicTable.Columns)

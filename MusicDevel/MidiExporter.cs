@@ -12,6 +12,8 @@ namespace MusicDevel
     {
         public void CreateMidiFile(string fileName, DataTable musicTable)
         {
+            #region Declarations
+            // mostly temp values for testing, will be replaced by live data from SQL
             int MidiFileType = 0;
             int BeatsPerMinute = 120;
             int TicksPerQuarterNote = 120;
@@ -20,9 +22,11 @@ namespace MusicDevel
             long absoluteTime = 0;
             int TrackNumber = 0;
             int ChannelNumber = 1;
-            int patchNumber = 1; // temporary fixed value Acoutic Grand Piano
+            int patchNumber = 1; // Acoutic Grand Piano
             int NoteVelocity = 100;
+            #endregion
 
+            // Create a new MIDI file with one track
             var midiEvts = new MidiEventCollection(MidiFileType, TicksPerQuarterNote);
 
             // Add title meta event (fails in MuseScore, appears in MusicMasterWorks)
