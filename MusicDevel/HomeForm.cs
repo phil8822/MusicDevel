@@ -43,6 +43,11 @@ namespace MusicDevel
             exporter.CreateMidiFile(outputFilename, SQLdata.melodyMidiEvents);
 
             SetupDGV();
+
+            DataTable x = MidiCombiner.CombineMidiTables(SQLdata.melodyMidiEvents, SQLdata.harmonyMidiEvents);
+            DiagHelper.DumpTable(x, x.TableName);
+
+
         }
 
         private void SetupDGV()

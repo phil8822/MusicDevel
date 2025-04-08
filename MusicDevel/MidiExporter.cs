@@ -10,21 +10,27 @@ namespace MusicDevel
 {
     public class MidiExporter
     {
+
+        #region Declarations
+        // mostly temp values for testing, will be replaced by live data from SQL
+        int MidiFileType = 0;
+        int BeatsPerMinute = 120;
+        int TicksPerQuarterNote = 120;
+        long absoluteTime = 0;
+        int TrackNumber = 0;
+        int NoteVelocity = 100;
+
+        int ChannelNumberMelody = 1;
+        int patchNumberVibraphone = 12; // Vibraphone
+
+        int ChannelNumberHarmony = 4;
+        int patchNumberPiano = 1; // Acoutic Grand Piano
+        #endregion
+
+
         public void CreateMidiFile(string fileName, DataTable musicTable)
         {
-            #region Declarations
-            // mostly temp values for testing, will be replaced by live data from SQL
-            int MidiFileType = 0;
-            int BeatsPerMinute = 120;
-            int TicksPerQuarterNote = 120;
-            int NoteDuration = 4 * TicksPerQuarterNote / 4;
-            long SpaceBetweenNotes = TicksPerQuarterNote;
-            long absoluteTime = 0;
-            int TrackNumber = 0;
-            int ChannelNumber = 1;
-            int patchNumber = 1; // Acoutic Grand Piano
-            int NoteVelocity = 100;
-            #endregion
+            // --------------------------- Melody only  --------------------------------------------------
 
             // Create a new MIDI file with one track
             var midiEvts = new MidiEventCollection(MidiFileType, TicksPerQuarterNote);
@@ -42,8 +48,7 @@ namespace MusicDevel
             midiEvts.AddEvent(new TextEvent("Text Event - Note Stream", MetaEventType.TextEvent, absoluteTime), TrackNumber);
             
             midiEvts.AddEvent(new TempoEvent(MicrosecondsPerQuaterNote(BeatsPerMinute), absoluteTime), TrackNumber);
-            midiEvts.AddEvent(new PatchChangeEvent(0, ChannelNumber, patchNumber), TrackNumber);
-
+            midiEvts.AddEvent(new PatchChangeEvent(0, ChannelNumberMelody, patchNumberVibraphone), TrackNumber);
 
             for (int i = 0; i < musicTable.Rows.Count; i++)
             {
@@ -52,12 +57,19 @@ namespace MusicDevel
                 int midiValue = Convert.ToInt32(row["IntVal"]);
                 int durationTicks = Convert.ToInt32(row["DurationTicks"]);
 
-                midiEvts.AddEvent(new NoteOnEvent(absoluteTime, ChannelNumber, midiValue, NoteVelocity, durationTicks), TrackNumber);
-                midiEvts.AddEvent(new NoteEvent(absoluteTime + durationTicks, ChannelNumber, MidiCommandCode.NoteOff, midiValue, 0), TrackNumber);
+                midiEvts.AddEvent(new NoteOnEvent(absoluteTime, ChannelNumberMelody, midiValue, NoteVelocity, durationTicks), TrackNumber);
+                midiEvts.AddEvent(new NoteEvent(absoluteTime + durationTicks, ChannelNumberMelody, MidiCommandCode.NoteOff, midiValue, 0), TrackNumber);
             }
 
             midiEvts.PrepareForExport();
             MidiFile.Export(fileName, midiEvts);
+
+
+            // --------------------------- Melody and Harmony  --------------------------------------------------
+
+
+
+
         }
 
 
