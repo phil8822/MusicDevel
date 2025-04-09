@@ -29,7 +29,7 @@ namespace MusicDevel
 
                 // A. Add ChannelNumber as the first column
                 AddChannelNumberColumn(melody, 1);
-                AddChannelNumberColumn(harmony, 2);
+                AddChannelNumberColumn(harmony, 4);
 
                 // B. Combine into AllEvents and sort by AbsoluteTime
                 DataTable allEvents = MergeAndSortTables(melody, harmony);

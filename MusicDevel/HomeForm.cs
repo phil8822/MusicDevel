@@ -46,8 +46,7 @@ namespace MusicDevel
 
             DataTable x = MidiCombiner.CombineMidiTables(SQLdata.melodyMidiEvents, SQLdata.harmonyMidiEvents);
             DiagHelper.DumpTable(x, x.TableName);
-
-
+            exporter.CreateMidiFile2(@"c:\@temp\cs22.mid", x);
         }
 
         private void SetupDGV()
