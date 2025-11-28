@@ -23,7 +23,7 @@ namespace MusicDevel
         int patchNumberVibraphone = 12; // Vibraphone
 
         int ChannelNumberHarmony = 4;
-        int patchNumberPiano = 1; // Acoutic Grand Piano
+        // int patchNumberPiano = 1; // Acoutic Grand Piano
         int patchNumberElecGuitar = 27; // Electric Guitar(jazz)
 
         long absoluteTime;

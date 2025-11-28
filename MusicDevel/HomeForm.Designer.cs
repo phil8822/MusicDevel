@@ -50,7 +50,7 @@
             this.dgvMusicTable.AllowUserToDeleteRows = false;
             this.dgvMusicTable.AllowUserToOrderColumns = true;
             this.dgvMusicTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvMusicTable.Location = new System.Drawing.Point(118, 361);
+            this.dgvMusicTable.Location = new System.Drawing.Point(76, 1257);
             this.dgvMusicTable.Name = "dgvMusicTable";
             this.dgvMusicTable.ReadOnly = true;
             this.dgvMusicTable.RowHeadersVisible = false;
@@ -63,7 +63,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(2304, 1524);
+            this.ClientSize = new System.Drawing.Size(2388, 1864);
             this.Controls.Add(this.dgvMusicTable);
             this.Controls.Add(this.btnGo);
             this.Name = "HomeForm";

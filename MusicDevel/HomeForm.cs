@@ -10,6 +10,10 @@ using System.Windows.Forms;
 using NAudio.Midi;
 using System.Diagnostics;
 using System.IO;
+using System.Windows.Forms.Integration; // <-- gives you ElementHost
+using MusicDevel; // <-- namespace where your WPF UserControl lives
+
+
 
 
 namespace MusicDevel
@@ -23,6 +27,20 @@ namespace MusicDevel
         {
             InitializeComponent();
             SetupForm();
+
+
+            // Create an instance of your WPF UserControl
+            var wpfControl = new MyWpfUserControl();
+
+            // Create the ElementHost to hold it
+            var host = new ElementHost
+            {
+                Dock = DockStyle.Fill, // make it fill the form
+                Child = wpfControl     // assign your WPF control
+            };
+
+            // Add the host to the WinForms form
+            this.Controls.Add(host);
         }
 
         private void SetupForm()
