@@ -7,14 +7,22 @@
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Height="91" Width="196" Background="Black">
             <TextBlock Text="Hello from WPF!"
                        FontSize="20"
                        Foreground="Green"
-                       Margin="0,0,0,10"/>
+                       Margin="0,0,0,10">
+                <TextBlock.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black"/>
+                        <GradientStop Color="White" Offset="1"/>
+                    </LinearGradientBrush>
+                </TextBlock.Background>
+            </TextBlock>
             <Button Content="Click Me"
-                    Width="180"
-                    Height="40"/>
+                    Width="180" 
+                    Height="40" 
+                    Click="WpfButton_Click" />
         </StackPanel>
     </Grid>
 </UserControl>

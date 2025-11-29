@@ -28,9 +28,11 @@ namespace MusicDevel
             InitializeComponent();
             SetupForm();
 
-
             // Create an instance of your WPF UserControl
             var wpfControl = new MyWpfUserControl();
+
+            // Subscribe to the WPF event
+            wpfControl.ButtonClicked += WpfControl_ButtonClicked;
 
             // Create the ElementHost to hold it
             var host = new ElementHost
@@ -43,6 +45,12 @@ namespace MusicDevel
             this.Controls.Add(host);
         }
 
+        // This runs when the WPF button is clicked
+        private void WpfControl_ButtonClicked(object sender, EventArgs e)
+        {
+            MessageBox.Show("WPF button clicked, handled in WinForms!");
+        }
+
         private void SetupForm()
         {
             // Form properties
@@ -50,7 +58,7 @@ namespace MusicDevel
             this.StartPosition = FormStartPosition.CenterScreen;
         }
 
-        private void btnGO_Click(object sender, EventArgs e)
+        private void btnCreateMidi_Click(object sender, EventArgs e)
         {
             // SQL tasks
             SQLdata.Melody();

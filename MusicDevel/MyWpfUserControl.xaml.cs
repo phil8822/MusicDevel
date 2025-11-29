@@ -24,5 +24,15 @@ namespace MusicDevel
         {
             InitializeComponent();
         }
+
+        private void WpfButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Raise a custom event so WinForms can listen
+            ButtonClicked?.Invoke(this, EventArgs.Empty);
+        }
+
+        // Define a public event that WinForms can subscribe to
+        public event EventHandler ButtonClicked;
+
     }
 }

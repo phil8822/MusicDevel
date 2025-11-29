@@ -28,21 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnGo = new System.Windows.Forms.Button();
+            this.btnCreateMidi = new System.Windows.Forms.Button();
             this.dgvMusicTable = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMusicTable)).BeginInit();
             this.SuspendLayout();
             // 
-            // btnGo
+            // btnCreateMidi
             // 
-            this.btnGo.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnGo.Location = new System.Drawing.Point(118, 156);
-            this.btnGo.Name = "btnGo";
-            this.btnGo.Size = new System.Drawing.Size(413, 127);
-            this.btnGo.TabIndex = 0;
-            this.btnGo.Text = "Go";
-            this.btnGo.UseVisualStyleBackColor = true;
-            this.btnGo.Click += new System.EventHandler(this.btnGO_Click);
+            this.btnCreateMidi.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCreateMidi.Location = new System.Drawing.Point(118, 156);
+            this.btnCreateMidi.Name = "btnCreateMidi";
+            this.btnCreateMidi.Size = new System.Drawing.Size(413, 127);
+            this.btnCreateMidi.TabIndex = 0;
+            this.btnCreateMidi.Text = "Create MIDI files";
+            this.btnCreateMidi.UseVisualStyleBackColor = true;
+            this.btnCreateMidi.Click += new System.EventHandler(this.btnCreateMidi_Click);
             // 
             // dgvMusicTable
             // 
@@ -65,7 +65,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(2388, 1864);
             this.Controls.Add(this.dgvMusicTable);
-            this.Controls.Add(this.btnGo);
+            this.Controls.Add(this.btnCreateMidi);
             this.Name = "HomeForm";
             this.Text = "Music Development";
             ((System.ComponentModel.ISupportInitialize)(this.dgvMusicTable)).EndInit();
@@ -75,7 +75,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Button btnGo;
+        private System.Windows.Forms.Button btnCreateMidi;
         private System.Windows.Forms.DataGridView dgvMusicTable;
     }
 }
