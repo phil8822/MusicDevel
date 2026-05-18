@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="CnxStringHome" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">Data Source=MV5;Initial Catalog=MyDemo;User ID=sa;Password=sasa</Value>
+      <Value Profile="(Default)">Data Source=MV7;Initial Catalog=MyDemo;User ID=sa;Password=sasa</Value>
     </Setting>
   </Settings>
 </SettingsFile>
