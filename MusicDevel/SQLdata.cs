@@ -258,10 +258,11 @@ ORDER BY [SongID], [Track], [Measure], [Note];
                 harmonyMidiEvents.Rows.Add(newRow);
             }
 
+            DiagHelper.DumpTable(melodyMidiEvents, "melodyMidiEvents");
+
             DiagHelper.DumpTable(harmonyData, "harmonyData");
             DiagHelper.DumpTable(harmonyMidiNotes, "harmonyMidiNotes");
             DiagHelper.DumpTable(harmonyMidiEvents, "harmonyMidiEvents");
-            DiagHelper.DumpTable(melodyMidiEvents, "melodyMidiEvents");
         }
 
 

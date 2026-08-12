@@ -79,10 +79,10 @@ namespace MusicDevel
         {
             this.dgvMusicTable.DataSource = SQLdata.melodyMidiEvents;
 
-            // Set DataGridView columns to width 80
+            // Set DataGridView columns
             foreach (DataGridViewColumn column in dgvMusicTable.Columns)
             {
-                column.Width = 80;
+                column.Width = 130;
             }
 
             // Set DataGridView column headers to bold font, centered, and wrap text
